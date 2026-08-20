@@ -2,3 +2,6 @@
 - [ ] Create the GitHub repository and configure the project remote.
 - [ ] Push the completed Coimbatore Startup Map source.
 - [ ] Verify the remote branch and provide the repository URL.
+- [ ] Add the Vite GitHub Pages base path and static deployment workflow.
+- [ ] Push the Pages configuration to the GitHub repository.
+- [ ] Enable GitHub Pages through GitHub Actions and verify the public URL.

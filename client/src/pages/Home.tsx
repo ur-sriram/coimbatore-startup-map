@@ -8,9 +8,6 @@ import { StartupMap } from "@/components/StartupMap";
 import type { Startup } from "@/lib/startup-types";
 
 const startups = startupsData as Startup[];
-const heroImage = "/manus-storage/coimbatore-atlas-hero_393916ea.jpg";
-const emptyImage = "/manus-storage/coimbatore-empty-state_6bde64a9.jpg";
-const brandSeal = "/manus-storage/coimbatore-coordinate-seal_dbd0a1f5.png";
 const unique = (values: string[]) => Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
 
 export default function Home() {
@@ -51,8 +48,8 @@ export default function Home() {
     <main className="atlas-shell">
       <StartupMap startups={filtered} selected={selected} onSelect={setSelected} />
 
-      <header className="atlas-header" style={{ backgroundImage: `linear-gradient(90deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.92) 70%, rgba(250,247,241,.46) 100%), url(${heroImage})` }}>
-        <a className="brand-lockup" href="#top" aria-label="Coimbatore Startup Map home"><img src={brandSeal} alt="" /><span><b>Coimbatore</b><em>Startup Map</em></span></a>
+      <header className="atlas-header">
+        <a className="brand-lockup" href="#top" aria-label="Coimbatore Startup Map home"><span className="brand-seal" aria-hidden="true"><i /></span><span><b>Coimbatore</b><em>Startup Map</em></span></a>
         <div className="control-strip" aria-label="Search and filters">
           <label className="top-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search startups, sectors, founders…" /></label>
           <select value={entityType} onChange={(event) => setEntityType(event.target.value)} aria-label="Startup type"><option value="all">All types</option><option value="startups">Startups</option><option value="vcs">VCs</option></select>
@@ -74,7 +71,7 @@ export default function Home() {
       {view === "grid" && filtered.length > 0 && <section className="directory-grid" aria-label="Startup grid directory"><div className="directory-grid__head"><div><span className="eyebrow">Directory</span><h2>All startups in this field</h2></div><button onClick={() => setView("map")}><Map size={14} />Return to map</button></div><div className="directory-grid__list">{filtered.map((startup) => <button key={startup.id} onClick={() => { setSelected(startup); setView("map"); }}><LogoMark startup={startup} size="md" /><span><b>{startup.name}</b><em>{startup.stage} · {startup.sector}</em><small>{startup.description}</small></span></button>)}</div></section>}
 
       {selected && <StartupDetailPanel startup={selected} onClose={() => setSelected(null)} />}
-      {filtered.length === 0 && <section className="empty-field" style={{ backgroundImage: `linear-gradient(rgba(250,247,241,.90), rgba(250,247,241,.90)), url(${emptyImage})` }}><span className="eyebrow">No records in this field</span><h2>Try widening the search.</h2><p>Clear a filter or search another sector to bring the map back into focus.</p><button onClick={resetFilters}>Reset all filters</button></section>}
+      {filtered.length === 0 && <section className="empty-field"><span className="eyebrow">No records in this field</span><h2>Try widening the search.</h2><p>Clear a filter or search another sector to bring the map back into focus.</p><button onClick={resetFilters}>Reset all filters</button></section>}
       <footer className="atlas-attribution"><SlidersHorizontal size={13} /> Public startup data, visualized with care · <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">CARTO Voyager</a></footer>
     </main>
   );
