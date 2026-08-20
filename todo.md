@@ -1,0 +1,4 @@
+- [ ] Confirm the repository name and private visibility.
+- [ ] Create the GitHub repository and configure the project remote.
+- [ ] Push the completed Coimbatore Startup Map source.
+- [ ] Verify the remote branch and provide the repository URL.
