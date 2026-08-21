@@ -7,7 +7,7 @@ import { StartupDetailPanel } from "@/components/StartupDetailPanel";
 import { StartupMap } from "@/components/StartupMap";
 import type { Startup } from "@/lib/startup-types";
 
-const startups = startupsData as Startup[];
+const startups = startupsData as unknown as Startup[];
 const unique = (values: string[]) => Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
 
 export default function Home() {
@@ -42,6 +42,7 @@ export default function Home() {
   }, [filtered, selected]);
 
   const activeFilters = [entityType, stage, sector, area].filter((value) => value !== "all").length + (query ? 1 : 0);
+  const verifiedMapCount = startups.filter((item) => item.coordinateQuality === "place_verified").length;
   const resetFilters = () => { setQuery(""); setEntityType("all"); setStage("all"); setSector("all"); setArea("all"); };
 
   return (
@@ -64,7 +65,7 @@ export default function Home() {
 
       {mobileFiltersOpen && <section className="mobile-filter-drawer" aria-label="Startup filters"><label className="mobile-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search startups, sectors, founders…" /></label><div className="mobile-filter-row"><select value={entityType} onChange={(event) => setEntityType(event.target.value)} aria-label="Startup type"><option value="all">All types</option><option value="startups">Startups</option><option value="vcs">VCs</option></select><select value={area} onChange={(event) => setArea(event.target.value)} aria-label="Area"><option value="all">All areas</option>{areas.map((value) => <option key={value} value={value}>{value}</option>)}</select></div><div className="mobile-filter-row"><select value={stage} onChange={(event) => setStage(event.target.value)} aria-label="Stage"><option value="all">All stages</option>{stages.map((value) => <option key={value} value={value}>{value}</option>)}</select><select value={sector} onChange={(event) => setSector(event.target.value)} aria-label="Sector"><option value="all">All sectors</option>{sectors.map((value) => <option key={value} value={value}>{value}</option>)}</select></div><button onClick={() => { resetFilters(); setMobileFiltersOpen(false); }}>Clear all filters</button></section>}
 
-      <section className="result-strip" aria-live="polite"><span className="result-strip__count">{filtered.length} <em>results</em></span>{activeFilters > 0 ? <button onClick={resetFilters}>Clear filters</button> : <span className="result-strip__hint">by Coimbatore Startup Map</span>}</section>
+      <section className="result-strip" aria-live="polite"><span className="result-strip__count">{filtered.length} <em>results</em></span>{activeFilters > 0 ? <button onClick={resetFilters}>Clear filters</button> : <span className="result-strip__hint">{verifiedMapCount} verified street pins · {startups.length - verifiedMapCount} directory-only</span>}</section>
 
       {filtered.length > 0 && !selected && view === "map" && <section className="startup-rail" aria-label="Visible startup results">{filtered.slice(0, 4).map((startup) => <button key={startup.id} onClick={() => setSelected(startup)}><LogoMark startup={startup} size="sm" /><span><b>{startup.name}</b><em>{startup.stage}</em></span></button>)}{filtered.length > 4 && <span className="rail-more">+{filtered.length - 4} more</span>}</section>}
 

@@ -17,12 +17,16 @@ export type Startup = {
   fundingUsd: string;
   investors: string;
   founders: string;
-  coordinateQuality: "city_level" | "missing" | "unverified";
-  displayLat: number;
-  displayLng: number;
+  coordinateQuality: "city_level" | "missing" | "unverified" | "street_candidate" | "street_verified" | "place_verified";
+  displayLat: number | null;
+  displayLng: number | null;
   isDisplayOffset: boolean;
   sourceUrls: string;
   sourceUrl: string;
+  verifiedAddress?: string;
+  locationVerificationSource?: string;
+  locationVerificationEvidence?: string;
+  geocoderSource?: string;
 };
 
 export const getInitials = (value: string) =>

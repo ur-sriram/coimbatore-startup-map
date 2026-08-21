@@ -5,3 +5,11 @@
 - [ ] Add the Vite GitHub Pages base path and static deployment workflow.
 - [ ] Push the Pages configuration to the GitHub repository.
 - [ ] Enable GitHub Pages through GitHub Actions and verify the public URL.
+- [ ] Capture representative desktop and detail views for LinkedIn.
+- [ ] Crop and export social-ready images in LinkedIn landscape dimensions.
+- [ ] Deliver the recommended screenshot attachments.
+- [ ] Audit all 130 map records and remove city-level or generated marker positions.
+- [ ] Collect publicly documented street-level company addresses with source provenance.
+- [ ] Geocode only verified addresses and flag any unresolved records.
+- [ ] Update the map to display verified locations distinctly and suppress unsupported markers.
+- [ ] Publish a location-verification report with coverage and limitations.

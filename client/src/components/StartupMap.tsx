@@ -42,7 +42,7 @@ const clusterIcon = (cluster: { getChildCount: () => number }) => {
 function MapNavigator({ selected }: { selected: Startup | null }) {
   const map = useMap();
   useEffect(() => {
-    if (!selected) return;
+    if (!selected || selected.displayLat === null || selected.displayLng === null) return;
     map.flyTo([selected.displayLat, selected.displayLng], Math.max(map.getZoom(), 14), {
       animate: true,
       duration: 0.7,
@@ -61,9 +61,13 @@ function ZoomWatcher({ onZoomChange }: { onZoomChange: (zoom: number) => void })
 export function StartupMap({ startups, selected, onSelect }: StartupMapProps) {
   const [zoom, setZoom] = useState(15);
   const compact = zoom < 14;
+  const verifiedStartups = startups.filter(
+    (startup): startup is Startup & { displayLat: number; displayLng: number } =>
+      startup.displayLat !== null && startup.displayLng !== null && startup.coordinateQuality === "place_verified",
+  );
   const markerLayer = useMemo(
     () =>
-      startups.map((startup) => (
+      verifiedStartups.map((startup) => (
         <Marker
           key={startup.id}
           position={[startup.displayLat, startup.displayLng]}
@@ -73,7 +77,7 @@ export function StartupMap({ startups, selected, onSelect }: StartupMapProps) {
           title={startup.name}
         />
       )),
-    [compact, onSelect, selected?.id, startups],
+    [compact, onSelect, selected?.id, verifiedStartups],
   );
 
   return (

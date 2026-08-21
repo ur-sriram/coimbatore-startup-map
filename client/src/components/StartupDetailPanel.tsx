@@ -19,7 +19,8 @@ function Datum({ label, value, icon }: { label: string; value: string; icon?: Re
 }
 
 export function StartupDetailPanel({ startup, onClose }: StartupDetailPanelProps) {
-  const location = startup.address || startup.location;
+  const hasVerifiedLocation = startup.coordinateQuality === "place_verified" && Boolean(startup.verifiedAddress);
+  const location = hasVerifiedLocation ? startup.verifiedAddress! : startup.location;
   return (
     <aside className="startup-dossier" aria-label={`${startup.name} details`}>
       <div className="dossier-topline">
@@ -40,7 +41,7 @@ export function StartupDetailPanel({ startup, onClose }: StartupDetailPanelProps
         {startup.sourceUrl && <a className="quiet-action" href={startup.sourceUrl} target="_blank" rel="noreferrer">Research sources <ExternalLink size={14} /></a>}
       </div>
       <div className="dossier-grid">
-        <Datum label="Location" value={location} icon={<MapPin size={13} />} />
+        <Datum label={hasVerifiedLocation ? "Verified street location" : "City"} value={location} icon={<MapPin size={13} />} />
         <Datum label="Founded" value={startup.foundedYear} icon={<CalendarDays size={13} />} />
         <Datum label="Team size" value={startup.teamSize} icon={<Users size={13} />} />
         <Datum label="Funding" value={formatFunding(startup.fundingUsd)} icon={<Landmark size={13} />} />
@@ -53,9 +54,9 @@ export function StartupDetailPanel({ startup, onClose }: StartupDetailPanelProps
       )}
       <div className="coordinate-note">
         <span className="coordinate-note__dot" />
-        {startup.coordinateQuality === "city_level" || startup.isDisplayOffset
-          ? "Map position is a city-level display point, not a verified office location."
-          : "Map position is based on publicly available location data."}
+        {hasVerifiedLocation
+          ? <>Map pin matched the company name and a documented Coimbatore street address. {startup.geocoderSource && <a href={startup.geocoderSource} target="_blank" rel="noreferrer">View verification</a>}</>
+          : "No verified street-level pin is displayed for this company. It remains available in the directory."}
       </div>
     </aside>
   );
